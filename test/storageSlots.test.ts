@@ -110,11 +110,19 @@ describe("storage slots of USDGLO", function () {
     });
 
     it("_initialized from Initializable is 2 for V3", async function () {
-      const { usdglo } = await loadFixture(deployUSDGLOFixture);
+      const { usdglo } = await loadFixture(deployUSDGLOFixtureWithVersion(3));
       const slot = 0;
       const slotValue = await readSlot(usdglo.address, slot);
       const byte32Hex = ethers.utils.hexDataSlice(slotValue, 31, 32);
       expect(parseUInt(byte32Hex)).to.equal(2);
+    });
+
+    it("_initialized from Initializable is 3 for V4", async function () {
+      const { usdglo } = await loadFixture(deployUSDGLOFixture);
+      const slot = 0;
+      const slotValue = await readSlot(usdglo.address, slot);
+      const byte32Hex = ethers.utils.hexDataSlice(slotValue, 31, 32);
+      expect(parseUInt(byte32Hex)).to.equal(3);
     });
 
     it("_initializing from Initializable is false", async function () {
@@ -459,15 +467,26 @@ describe("storage slots of USDGLO", function () {
       expect(parseUInt(slotValue)).to.equal(0);
     });
 
-    it("Implementation slot", async function () {
+    it("Implementation slot v3", async function () {
       const { usdglo, v3Implementation } = await loadFixture(
-        deployUSDGLOFixture
+        deployUSDGLOFixtureWithVersion(3)
       );
       const slot =
         24440054405305269366569402256811496959409073762505157381672968839269610695612n;
 
       const slotValue = await readSlot(usdglo.address, slot);
       expect(parseUInt(slotValue)).to.equal(v3Implementation);
+    });
+
+    it("Implementation slot v4", async function () {
+      const { usdglo, v4Implementation } = await loadFixture(
+        deployUSDGLOFixture
+      );
+      const slot =
+        24440054405305269366569402256811496959409073762505157381672968839269610695612n;
+
+      const slotValue = await readSlot(usdglo.address, slot);
+      expect(parseUInt(slotValue)).to.equal(v4Implementation);
     });
   });
 });

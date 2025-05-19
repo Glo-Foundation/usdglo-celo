@@ -1,13 +1,13 @@
 pragma solidity 0.8.7;
 
 import "forge-std/Test.sol";
-import "../../contracts/v3/USDGLO_V3.sol";
+import "../../contracts/v4/USDGLO_V4.sol";
 import "forge-std/StdCheats.sol";
 import "forge-std/StdUtils.sol";
 import "./Addresses.sol";
 
 contract USDGloHandler is StdCheats, StdUtils, Test {
-    GloDollarV3 public usdglo;
+    GloDollarV4 public usdglo;
 
     address private constant admin = address(1);
     address private constant minter = address(2);
@@ -20,7 +20,7 @@ contract USDGloHandler is StdCheats, StdUtils, Test {
 
     AddressSet internal _actors;
 
-    constructor(GloDollarV3 _usdglo) {
+    constructor(GloDollarV4 _usdglo) {
         usdglo = _usdglo;
         _actors.add(minter);
         _actors.add(denylister);

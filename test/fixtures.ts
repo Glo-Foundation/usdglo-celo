@@ -1,12 +1,13 @@
 import { ethers, upgrades } from "hardhat";
 import { PAUSER_ROLE, UPGRADER_ROLE } from "./utils";
-const MAX_VERSION = 3;
+const MAX_VERSION = 4;
 
 export function deployUSDGLOFixtureWithVersion(version = MAX_VERSION) {
   async function createFixtures(): Promise<{
     usdglo: any;
     admin: any;
     v3Implementation?: any;
+    v4Implementation?: any;
   }> {
     if (version < 0 || version > MAX_VERSION) {
       throw new Error(`Version ${version} of fixture is not supported`);
@@ -59,10 +60,27 @@ export function deployUSDGLOFixtureWithVersion(version = MAX_VERSION) {
       "0x38e454b100000000000000000000000000000000000000000000000000000000"
     );
 
-    const usdglo = USDGLO_V3.attach(usdgloV2.address);
+    const usdgloV3 = USDGLO_V3.attach(usdgloV2.address);
+
+    if (version == 3) {
+      await usdgloV3.connect(admin).unpause();
+      return { usdglo: usdgloV3, admin, v3Implementation };
+    }
+
+    const USDGLO_V4 = await ethers.getContractFactory("GloDollarV4", admin);
+
+    const v4Implementation = await upgrades.prepareUpgrade(
+      usdgloV3.address,
+      USDGLO_V4,
+      { kind: "uups" }
+    );
+
+    // new ethers.utils.Interface(["function initializeV4()"]).getSighash("initializeV4")
+    await usdgloV3.upgradeToAndCall(v4Implementation.toString(), "0x54a08606");
+    const usdglo = USDGLO_V4.attach(usdgloV3.address);
 
     await usdglo.connect(admin).unpause();
-    return { usdglo, admin, v3Implementation };
+    return { usdglo, admin, v4Implementation };
   }
   return createFixtures;
 }
