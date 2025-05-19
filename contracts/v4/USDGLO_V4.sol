@@ -41,12 +41,6 @@ contract GloDollarV4 is
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
     }
 
-    // Not needed?
-    // https://docs.openzeppelin.com/contracts/5.x/api/proxy#Initializable
-    function initializeV4() public reinitializer(3) {
-        __ERC20Permit_init("Glo Dollar");
-    }
-
     function pause() external onlyRole(PAUSER_ROLE) {
         _pause();
     }

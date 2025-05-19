@@ -25,7 +25,6 @@ contract USDGLO_Test is Test {
         usdglo = GloDollarV4(address(proxy));
 
         usdglo.initialize(admin);
-        usdglo.initializeV4();
 
         vm.startPrank(admin);
 

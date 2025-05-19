@@ -28,7 +28,6 @@ contract USDGLO_PermitTest is Test, PermitHelpers {
         usdglo = GloDollarV4(address(proxy));
 
         usdglo.initialize(admin);
-        usdglo.initializeV4();
 
         vm.startPrank(admin);
 

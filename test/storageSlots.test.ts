@@ -122,7 +122,7 @@ describe("storage slots of USDGLO", function () {
       const slot = 0;
       const slotValue = await readSlot(usdglo.address, slot);
       const byte32Hex = ethers.utils.hexDataSlice(slotValue, 31, 32);
-      expect(parseUInt(byte32Hex)).to.equal(3);
+      expect(parseUInt(byte32Hex)).to.equal(2);
     });
 
     it("_initializing from Initializable is false", async function () {

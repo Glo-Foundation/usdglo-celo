@@ -73,10 +73,6 @@ describe("upgradeable functionality of USDGLO", function () {
       });
       await upgrades.upgradeProxy(usdgloV3, USDGLOV4, {
         kind: "uups",
-        call: {
-          fn: "initializeV4",
-          args: [],
-        },
       });
     });
 
@@ -118,10 +114,6 @@ describe("upgradeable functionality of USDGLO", function () {
       });
       const usdgloV4 = await upgrades.upgradeProxy(usdgloV3, USDGLOV4, {
         kind: "uups",
-        call: {
-          fn: "initializeV4",
-          args: [],
-        },
       });
 
       expect(await usdgloV4.paused()).to.be.true;

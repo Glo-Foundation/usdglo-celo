@@ -75,8 +75,7 @@ export function deployUSDGLOFixtureWithVersion(version = MAX_VERSION) {
       { kind: "uups" }
     );
 
-    // new ethers.utils.Interface(["function initializeV4()"]).getSighash("initializeV4")
-    await usdgloV3.upgradeToAndCall(v4Implementation.toString(), "0x54a08606");
+    await usdgloV3.upgradeTo(v4Implementation.toString());
     const usdglo = USDGLO_V4.attach(usdgloV3.address);
 
     await usdglo.connect(admin).unpause();
