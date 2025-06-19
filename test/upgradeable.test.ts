@@ -57,18 +57,22 @@ describe("upgradeable functionality of USDGLO", function () {
         user
       );
       const USDGLOV3 = await ethers.getContractFactory("GloDollarV3", user);
+      const USDGLOV4 = await ethers.getContractFactory("GloDollarV4", user);
 
       await usdgloV1.connect(admin).grantRole(UPGRADER_ROLE, user.address);
 
       const usdgloV2 = await upgrades.upgradeProxy(usdgloV1, USDGLOV2, {
         kind: "uups",
       });
-      await upgrades.upgradeProxy(usdgloV2, USDGLOV3, {
+      const usdgloV3 = await upgrades.upgradeProxy(usdgloV2, USDGLOV3, {
         kind: "uups",
         call: {
           fn: "initializeV3",
           args: [],
         },
+      });
+      await upgrades.upgradeProxy(usdgloV3, USDGLOV4, {
+        kind: "uups",
       });
     });
 
@@ -96,6 +100,7 @@ describe("upgradeable functionality of USDGLO", function () {
         admin
       );
       const USDGLOV3 = await ethers.getContractFactory("GloDollarV3", admin);
+      const USDGLOV4 = await ethers.getContractFactory("GloDollarV4", admin);
 
       const usdgloV2 = await upgrades.upgradeProxy(usdgloV1.address, USDGLOV2, {
         kind: "uups",
@@ -107,10 +112,13 @@ describe("upgradeable functionality of USDGLO", function () {
           args: [],
         },
       });
+      const usdgloV4 = await upgrades.upgradeProxy(usdgloV3, USDGLOV4, {
+        kind: "uups",
+      });
 
-      expect(await usdgloV3.paused()).to.be.true;
-      await usdgloV3.connect(admin).unpause();
-      expect(await usdgloV3.paused()).to.be.false;
+      expect(await usdgloV4.paused()).to.be.true;
+      await usdgloV4.connect(admin).unpause();
+      expect(await usdgloV4.paused()).to.be.false;
     });
   });
 });

@@ -1,11 +1,11 @@
 pragma solidity 0.8.7;
 
 import "forge-std/Test.sol";
-import "../../contracts/v3/USDGLO_V3.sol";
+import "../../contracts/v4/USDGLO_V4.sol";
 import "./Helper.sol";
 
 contract USDGLO_Test is Test {
-    GloDollarV3 private usdglo;
+    GloDollarV4 private usdglo;
 
     address private constant admin = address(1);
     address private constant minter = address(2);
@@ -15,14 +15,13 @@ contract USDGLO_Test is Test {
     uint256 private constant MAX_ALLOWED_SUPPLY = (uint256(1) << 255) - 1;
 
     function setUp() public {
-        GloDollarV3 implementation = new GloDollarV3();
+        GloDollarV4 implementation = new GloDollarV4();
         UUPSProxy proxy = new UUPSProxy(address(implementation), "");
 
         // wrap in ABI to support easier calls
-        usdglo = GloDollarV3(address(proxy));
+        usdglo = GloDollarV4(address(proxy));
 
         usdglo.initialize(admin);
-        usdglo.initializeV3();
 
         vm.startPrank(admin);
 
