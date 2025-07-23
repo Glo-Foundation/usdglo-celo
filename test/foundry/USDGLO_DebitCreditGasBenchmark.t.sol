@@ -40,25 +40,15 @@ contract USDGLO_DebitCreditGasBenchmark_Test is Test {
         vm.stopPrank();
     }
 
-    function test_debitGasFees() public {
-        uint256 amount = 100;
-    }
-
     function test_debitCreditGasFees() public {
-        uint256 amount = 100;
         uint256 refund = 20;
         uint256 tipTxFee = 30;
         uint256 gatewayFee = 10;
         uint256 baseTxFee = 40;
-        uint256 tokenSupplyBefore = usdglo.totalSupply();
-
-        // assertEq(usdglo.balanceOf(holder0), 1000);
 
         vm.prank(address(0));
         usdglo.debitGasFees(holder0, 100);
         vm.stopPrank();
-
-        // assertEq(usdglo.balanceOf(holder0), 1000 - amount);
 
         vm.prank(address(0));
         usdglo.creditGasFees(
@@ -72,14 +62,5 @@ contract USDGLO_DebitCreditGasBenchmark_Test is Test {
             baseTxFee
         );
         vm.stopPrank();
-
-        // assertEq(usdglo.balanceOf(holder0), 1000 + refund);
-        // assertEq(usdglo.balanceOf(feeRecipient), tipTxFee);
-        // assertEq(usdglo.balanceOf(gatewayFeeRecipient), gatewayFee);
-        // assertEq(usdglo.balanceOf(communityFund), baseTxFee);
-        // assertEq(
-        //     usdglo.totalSupply(),
-        //     tokenSupplyBefore + refund + tipTxFee + gatewayFee + baseTxFee
-        // );
     }
 }
