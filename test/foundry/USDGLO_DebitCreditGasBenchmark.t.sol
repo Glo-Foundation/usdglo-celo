@@ -37,6 +37,10 @@ contract USDGLO_DebitCreditGasBenchmark_Test is Test {
 
         vm.startPrank(minter);
         usdglo.mint(holder0, 1000);
+        usdglo.mint(feeRecipient, 1000);
+        usdglo.mint(communityFund, 1000);
+        usdglo.mint(gatewayFeeRecipient, 1000);
+
         vm.stopPrank();
     }
 
